@@ -1,12 +1,9 @@
-import React from "react";
 import { Video } from "../interfaces/Video";
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
 
 const VideoCard = ({ _id, title, description, url, fn }: Video) => {
   const navigate = useNavigate();
-
-  let video = url;
   return (
     <div className="hover:border-gray-400 cursor-pointer border p-5 rounded text-center">
       <div className="flex justify-between pb-3">
@@ -27,12 +24,9 @@ const VideoCard = ({ _id, title, description, url, fn }: Video) => {
       </div>
 
       <iframe
+        title="video"
         className="w-full h-72"
-        src={
-          video.includes("/watch?v=")
-            ? video.replace("/watch?v=", "/embed/")
-            : video
-        }
+        src={url}
         frameBorder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen

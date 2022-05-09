@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { notify } from "../utils/notify";
 
 // compnts
@@ -35,6 +34,12 @@ const VideosPage = () => {
     });
   };
 
+  const convertVideoUrl = (url: string): string => {
+    return url.includes("/watch?v=")
+      ? url.replace("/watch?v=", "/embed/")
+      : url;
+  };
+
   const deleteVideo = (id: string | undefined) => {
     videoService
       .deleteAVideo(id)
@@ -56,18 +61,31 @@ const VideosPage = () => {
   }, []);
 
   return (
-    <Layout>
-      {isLoading && <h1>Loading ...</h1>}
-      <h1 className="text-3xl font-bold pb-5">Videos</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {videos.length === 0 && "add your first video"}
-        {videos.map((video) => {
-          console.log(video);
+    <>
+      {isLoading && (
+        <div className="h-screen w-full relative bg-white border flex justify-center items-center">
+          loading...
+        </div>
+      )}
+      <Layout>
+        <h1 className="text-3xl font-bold pb-5">Videos</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {videos.length === 0 && "add your first video"}
+          {videos.map(({ _id, url, description, title }) => {
+            let validUrl = convertVideoUrl(url);
 
-          return <VideoCard key={video._id} {...video} fn={deleteVideo} />;
-        })}
-      </div>
-    </Layout>
+            let video = {
+              _id,
+              url: validUrl,
+              title,
+              description,
+            };
+
+            return <VideoCard key={_id} {...video} fn={deleteVideo} />;
+          })}
+        </div>
+      </Layout>
+    </>
   );
 };
 

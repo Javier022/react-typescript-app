@@ -83,8 +83,7 @@ const CreateVideoPage = () => {
   };
 
   useEffect(() => {
-    // if param in url to update video
-
+    // if url has params update else to create video
     setVideo({ title: "", url: "", description: "" });
     setAction("create");
 
